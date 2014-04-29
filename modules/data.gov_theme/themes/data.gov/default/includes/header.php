@@ -151,7 +151,10 @@ if($onLoad !== '') {
 User Account
     </a></h1>
 </div>
-
+<div class="grid12-12">
+<p>Recently, you may have heard about a new internet security weakness, known as Heartbleed, which is impacting some websites. There is no indication that Heartbleed has been used against idm.data.gov & idp.data.gov or that any personal information has ever been at risk. However, we are resetting current passwords out of an abundance of caution to ensure the protection of your information.
+</p>
+</div>
 <div id="content">
 <?php
 
