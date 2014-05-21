@@ -1,5 +1,6 @@
 <?php
 
+$home_link = $this->configuration->getValue('home_link', '#');
 
 
 if(!empty($this->data['htmlinject']['htmlContentPost'])) {
@@ -67,8 +68,11 @@ if(!empty($this->data['htmlinject']['htmlContentPost'])) {
             // function to dyanamically pull menus
 
                     (function($) {
-                        var url = '//www.data.gov/wp-content/plugins/datagov-custom/wp_download_links.php?callback=';
+                        var home_url='<?php echo $home_link; ?>';
 
+                        //alert(home_url);
+
+                        var url = home_url+'/app/plugins/datagov-custom/wp_download_links.php?callback=';
                         $.ajax({
                             type: 'GET',
                             url: url,
