@@ -45,11 +45,13 @@ if(!empty($this->data['htmlinject']['htmlContentPost'])) {
 
                 </ul>
             </nav>
+            <div aria-hidden="true" role="tooltip" class="tooltip" id="external_disclaimer" style="display:none">This link will direct you to an external website that may have different content and privacy policies from Data.gov.
+            </div>
             <div class="col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1 social-nav">
                 <nav role="navigation">
                     <ul class="nav" id="menu-social_navigation">
-                        <li><a href="https://twitter.com/usdatagov"><i class="fa fa-twitter"></i><span>Twitter</span></a></li>
-                        <li><a href="http://github.com/GSA/data.gov/"><i class="fa fa-github"></i><span>Github</span></a></li>
+                        <li><a href="https://twitter.com/usdatagov" aria-describedby="external_disclaimer" title="This link will direct you to an external website that may have different content and privacy policies from Data.gov."><i class="fa fa-twitter"></i><span>Twitter</span></a></li>
+                        <li><a href="http://github.com/GSA/data.gov/" aria-describedby="external_disclaimer" title="This link will direct you to an external website that may have different content and privacy policies from Data.gov."><i class="fa fa-github"></i><span>Github</span></a></li>
 
                     </ul>
                 </nav>
