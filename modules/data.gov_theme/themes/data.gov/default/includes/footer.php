@@ -86,13 +86,13 @@ if(!empty($this->data['htmlinject']['htmlContentPost'])) {
                                 var menus = [];
                                 var topmenus=[];
                                 var topsecondarys=[];
-                                $.each(json.Footer, function(i,menu){
+                                $.each(json.Footer_navigation, function(i,menu){
                                     menus.push('<li><a href="' +menu.link + '">' +menu.name + '</a></li>');
                                             if(menu.name=='Log In'){
                                                 menus.push('<li style="display:none;"><a href="' +menu.link + '">' +menu.name + '</a></li>');
                                             }
                                 });
-                                $.each(json.Primary, function(i,topmenu){
+                                $.each(json.Primary_navigation, function(i,topmenu){
                                     if(!topmenu.parent_id) {
                                         if(topmenu.name=='Topics'){
                                             topmenus.push('<li class="dropdown menu-topics"><a data-toggle="dropdown" class="dropdown-toggle">Topics<b class="caret"></b></a><ul class="dropdown-menu"></ul></li>');
@@ -102,7 +102,7 @@ if(!empty($this->data['htmlinject']['htmlContentPost'])) {
 
                                     }
                                 });
-                                $.each(json.Primary, function(i,topsecondary){
+                                $.each(json.Primary_navigation, function(i,topsecondary){
                                     if(topsecondary.parent_id ) {
                                         topsecondarys.push('<li><a href="' +topsecondary.link + '">' +topsecondary.name + '</a></li>');
                                     }
