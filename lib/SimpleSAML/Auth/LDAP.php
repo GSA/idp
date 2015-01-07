@@ -17,7 +17,6 @@ define('ERR_AS_ATTRIBUTE', 6);
  * @author Andreas Aakre Solberg, UNINETT AS. <andreas.solberg@uninett.no>
  * @author Anders Lund, UNINETT AS. <anders.lund@uninett.no>
  * @package simpleSAMLphp
- * @version $Id: Session.php 244 2008-02-04 08:36:24Z andreassolberg $
  */
 class SimpleSAML_Auth_LDAP {
 
@@ -49,16 +48,18 @@ class SimpleSAML_Auth_LDAP {
 	 * @param bool $debug
 	 * @param int $timeout
 	 * @param int $port
+	 * @param bool $referrals
 	 */
 	// TODO: Flesh out documentation.
-	public function __construct($hostname, $enable_tls = TRUE, $debug = FALSE, $timeout = 0, $port = 389) {
+	public function __construct($hostname, $enable_tls = TRUE, $debug = FALSE, $timeout = 0, $port = 389, $referrals = TRUE) {
 
 		// Debug.
 		SimpleSAML_Logger::debug('Library - LDAP __construct(): Setup LDAP with ' .
 			'host=\'' . $hostname .
 			'\', tls=' . var_export($enable_tls, true) .
 			', debug=' . var_export($debug, true) .
-			', timeout=' . var_export($timeout, true));
+			', timeout=' . var_export($timeout, true) .
+			', referrals=' . var_export($referrals, true));
 
 		/*
 		 * Set debug level before calling connect. Note that this passes
@@ -80,6 +81,10 @@ class SimpleSAML_Auth_LDAP {
 		/* Enable LDAP protocol version 3. */
 		if (!@ldap_set_option($this->ldap, LDAP_OPT_PROTOCOL_VERSION, 3))
 			throw $this->makeException('Library - LDAP __construct(): Failed to set LDAP Protocol version (LDAP_OPT_PROTOCOL_VERSION) to 3', ERR_INTERNAL);
+
+		/* Set referral option */
+		if (!@ldap_set_option($this->ldap, LDAP_OPT_REFERRALS, $referrals))
+			throw $this->makeException('Library - LDAP __construct(): Failed to set LDAP Referrals (LDAP_OPT_REFERRALS) to '.$referrals, ERR_INTERNAL);
 
 		// Set timeouts, if supported.
 		// (OpenLDAP 2.x.x or Netscape Directory SDK x.x needed).
@@ -355,6 +360,25 @@ class SimpleSAML_Auth_LDAP {
 			);
 		}
 
+        // parse each entry and process its attributes
+        for ($i = 0; $i < $results['count']; $i++) {
+            $entry = $results[$i];
+
+            // iterate over the attributes of the entry
+            for ($j = 0; $j < $entry['count']; $j++) {
+                $name = $entry[$j];
+                $attribute = $entry[$name];
+
+                // decide whether to base64 encode or not
+                for ($k = 0; $k < $attribute['count']; $k++) {
+                    // base64 encode binary attributes
+                    if (strtolower($name) === 'jpegphoto' || strtolower($name) === 'objectguid') {
+                        $results[$i][$name][$k] = base64_encode($attribute[$k]);
+                    }
+                }
+            }
+        }
+
 		// Remove the count and return
 		unset($results['count']);
 		return $results;
@@ -381,7 +405,7 @@ class SimpleSAML_Auth_LDAP {
 		$authz_id = null;
 
 		if ($sasl_args != NULL) {
-			if (!function_exists(ldap_sasl_bind)) {
+			if (!function_exists('ldap_sasl_bind')) {
 				$ex_msg = 'Library - missing SASL support';
 				throw $this->makeException($ex_msg);
 			}
@@ -516,8 +540,8 @@ class SimpleSAML_Auth_LDAP {
 					continue;
 				}
 
-				// Base64 encode jpegPhoto.
-				if (strtolower($name) === 'jpegphoto') {
+				// Base64 encode binary attributes.
+				if (strtolower($name) === 'jpegphoto' || strtolower($name) === 'objectguid') {
 					$values[] = base64_encode($value);
 				} else
 					$values[] = $value;

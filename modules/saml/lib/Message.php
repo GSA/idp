@@ -6,23 +6,44 @@
  * available metadata.
  *
  * @package simpleSAMLphp
- * @version $Id$
  */
 class sspmod_saml_Message {
 
 	/**
-	 * Add signature key and and senders certificate to an element (Message or Assertion).
+	 * Add signature key and sender certificate to an element (Message or Assertion).
 	 *
 	 * @param SimpleSAML_Configuration $srcMetadata  The metadata of the sender.
 	 * @param SimpleSAML_Configuration $dstMetadata  The metadata of the recipient.
 	 * @param SAML2_Message $element  The element we should add the data to.
 	 */
-	public static function addSign(SimpleSAML_Configuration $srcMetadata, SimpleSAML_Configuration $dstMetadata = NULL, SAML2_SignedElement $element) {
+	public static function addSign(SimpleSAML_Configuration $srcMetadata, SimpleSAML_Configuration $dstMetadata, SAML2_SignedElement $element) {
 
-		$keyArray = SimpleSAML_Utilities::loadPrivateKey($srcMetadata, TRUE);
-		$certArray = SimpleSAML_Utilities::loadPublicKey($srcMetadata, FALSE);
+		$dstPrivateKey = $dstMetadata->getString('signature.privatekey', NULL);
 
-		$privateKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA1, array('type' => 'private'));
+		if ($dstPrivateKey !== NULL) {
+			$keyArray = SimpleSAML_Utilities::loadPrivateKey($dstMetadata, TRUE, 'signature.');
+			$certArray = SimpleSAML_Utilities::loadPublicKey($dstMetadata, FALSE, 'signature.');
+		} else {
+			$keyArray = SimpleSAML_Utilities::loadPrivateKey($srcMetadata, TRUE);
+			$certArray = SimpleSAML_Utilities::loadPublicKey($srcMetadata, FALSE);
+		}
+
+		$algo = $dstMetadata->getString('signature.algorithm', NULL);
+		if ($algo === NULL) {
+			/*
+			 * In the NIST Special Publication 800-131A, SHA-1 became deprecated for generating
+			 * new digital signatures in 2011, and will be explicitly disallowed starting the 1st
+			 * of January, 2014. We'll keep this as a default for the next release and mark it
+			 * as deprecated, as part of the transition to SHA-256.
+			 *
+			 * See http://csrc.nist.gov/publications/nistpubs/800-131A/sp800-131A.pdf for more info.
+			 *
+			 * TODO: change default to XMLSecurityKey::RSA_SHA256.
+			 */
+			$algo = $srcMetadata->getString('signature.algorithm', XMLSecurityKey::RSA_SHA1);
+		}
+
+		$privateKey = new XMLSecurityKey($algo, array('type' => 'private'));
 		if (array_key_exists('password', $keyArray)) {
 			$privateKey->passphrase = $keyArray['password'];
 		}
@@ -301,7 +322,7 @@ class sspmod_saml_Message {
 
 		$blacklist = $srcMetadata->getArray('encryption.blacklisted-algorithms', NULL);
 		if ($blacklist === NULL) {
-			$blacklist = $dstMetadata->getArray('encryption.blacklisted-algorithms', array());
+			$blacklist = $dstMetadata->getArray('encryption.blacklisted-algorithms', array(XMLSecurityKey::RSA_1_5));
 		}
 		return $blacklist;
 	}
@@ -408,16 +429,10 @@ class sspmod_saml_Message {
 		/* Shoaib - setting the appropriate binding based on parameter in sp-metadata defaults to HTTP_POST */
 		$ar->setProtocolBinding($protbind);
 
-		/* Select appropriate SSO endpoint */
-		if ($protbind === SAML2_Const::BINDING_HOK_SSO) {
-		    $dst = $idpMetadata->getDefaultEndpoint('SingleSignOnService', array(SAML2_Const::BINDING_HOK_SSO));
-		} else {
-		    $dst = $idpMetadata->getDefaultEndpoint('SingleSignOnService', array(SAML2_Const::BINDING_HTTP_REDIRECT));
-		}
-		$dst = $dst['Location'];
-
 		$ar->setIssuer($spMetadata->getString('entityid'));
-		$ar->setDestination($dst);
+
+		$ar->setAssertionConsumerServiceIndex($spMetadata->getInteger('AssertionConsumerServiceIndex', NULL));
+		$ar->setAttributeConsumingServiceIndex($spMetadata->getInteger('AttributeConsumingServiceIndex', NULL));
 
 		if ($spMetadata->hasValue('AuthnContextClassRef')) {
 			$accr = $spMetadata->getArrayizeString('AuthnContextClassRef');
@@ -438,13 +453,8 @@ class sspmod_saml_Message {
 	 */
 	public static function buildLogoutRequest(SimpleSAML_Configuration $srcMetadata, SimpleSAML_Configuration $dstMetadata) {
 
-		$dst = $dstMetadata->getDefaultEndpoint('SingleLogoutService', array(SAML2_Const::BINDING_HTTP_REDIRECT));
-		$dst = $dst['Location'];
-
 		$lr = new SAML2_LogoutRequest();
-
 		$lr->setIssuer($srcMetadata->getString('entityid'));
-		$lr->setDestination($dst);
 
 		self::addRedirectSign($srcMetadata, $dstMetadata, $lr);
 
@@ -460,17 +470,8 @@ class sspmod_saml_Message {
 	 */
 	public static function buildLogoutResponse(SimpleSAML_Configuration $srcMetadata, SimpleSAML_Configuration $dstMetadata) {
 
-		$dst = $dstMetadata->getDefaultEndpoint('SingleLogoutService', array(SAML2_Const::BINDING_HTTP_REDIRECT));
-		if (isset($dst['ResponseLocation'])) {
-			$dst = $dst['ResponseLocation'];
-		} else {
-			$dst = $dst['Location'];
-		}
-
 		$lr = new SAML2_LogoutResponse();
-
 		$lr->setIssuer($srcMetadata->getString('entityid'));
-		$lr->setDestination($dst);
 
 		self::addRedirectSign($srcMetadata, $dstMetadata, $lr);
 
@@ -595,15 +596,14 @@ class sspmod_saml_Message {
 			/* Is SSO with HoK enabled? IdP remote metadata overwrites SP metadata configuration. */
 			$hok = $idpMetadata->getBoolean('saml20.hok.assertion', NULL);
 			if ($hok === NULL) {
-			    $protocolBinding = $spMetadata->getString('ProtocolBinding', SAML2_Const::BINDING_HTTP_POST);
-			    if ($protocolBinding === SAML2_Const::BINDING_HOK_SSO) {
-				$hok = TRUE;
-			    } else {
-				$hok = FALSE;
-			    }
+				$hok = $spMetadata->getBoolean('saml20.hok.assertion', FALSE);
 			}
 			if ($sc->Method === SAML2_Const::CM_BEARER && $hok) {
 				$lastError = 'Bearer SubjectConfirmation received, but Holder-of-Key SubjectConfirmation needed';
+				continue;
+			}
+			if ($sc->Method === SAML2_Const::CM_HOK && !$hok) {
+				$lastError = 'Holder-of-Key SubjectConfirmation received, but the Holder-of-Key profile is not enabled.';
 				continue;
 			}
 
@@ -621,8 +621,9 @@ class sspmod_saml_Message {
 				/* Extract certificate data (if this is a certificate). */
 				$clientCert = $_SERVER['SSL_CLIENT_CERT'];
 				$pattern = '/^-----BEGIN CERTIFICATE-----([^-]*)^-----END CERTIFICATE-----/m';
-				if (preg_match($pattern, $clientCert, $matches) === FALSE) {
-				    $lastError = 'No valid client certificate provided during TLS Handshake with SP';
+				if (!preg_match($pattern, $clientCert, $matches)) {
+				    $lastError = 'Error while looking for client certificate during TLS handshake with SP, the client certificate does not '
+				                 . 'have the expected structure';
 				    continue;
 				}
 				/* We have a valid client certificate from the browser. */

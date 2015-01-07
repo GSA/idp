@@ -23,7 +23,7 @@ if (get_magic_quotes_runtime()) {
 
 
 /* Initialize the autoloader. */
-require_once('/var/simplesamlphp-idp/lib/_autoload.php');
+require_once(dirname(dirname(__FILE__)) . '/lib/_autoload.php');
 
 /* Enable assertion handler for all pages. */
 SimpleSAML_Error_Assertion::installHandler();
@@ -54,7 +54,7 @@ function SimpleSAML_error_handler($errno, $errstr, $errfile = NULL, $errline = 0
 	}
 
 
-	if ($errno & SimpleSAML_Utilities::$logMask) {
+	if ($errno & SimpleSAML_Utilities::$logMask || ! ($errno & error_reporting() )) {
 		/* Masked error. */
 		return FALSE;
 	}
@@ -97,11 +97,11 @@ class SimpleSAML_IncPrefixWarn {
 $SIMPLESAML_INCPREFIX = new SimpleSAML_IncPrefixWarn();
 
 
-$configdir = '/var/simplesamlphp-idp/config';
+$configdir = dirname(dirname(__FILE__)) . '/config';
 if (!file_exists($configdir . '/config.php')) {
 	header('Content-Type: text/plain');
 	echo("You have not yet created the simpleSAMLphp configuration files.\n");
-	echo("See: http://rnd.feide.no/content/installing-simplesamlphp#id434777\n");
+	echo("See: https://simplesamlphp.org/docs/devel/simplesamlphp-install-repo\n");
 	exit(1);
 }
 

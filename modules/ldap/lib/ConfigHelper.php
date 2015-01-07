@@ -7,7 +7,6 @@
  * configuration of these options.
  *
  * @package simpleSAMLphp
- * @version $Id$
  */
 class sspmod_ldap_ConfigHelper {
 
@@ -45,6 +44,11 @@ class sspmod_ldap_ConfigHelper {
 	 * @var int
 	 */
 	private $timeout;
+
+	/**
+	 * Whether to follow referrals
+	 */
+	private $referrals;
 
 
 	/**
@@ -126,6 +130,7 @@ class sspmod_ldap_ConfigHelper {
 		$this->enableTLS = $config->getBoolean('enable_tls', FALSE);
 		$this->debug = $config->getBoolean('debug', FALSE);
 		$this->timeout = $config->getInteger('timeout', 0);
+		$this->referrals = $config->getBoolean('referrals', TRUE);
 		$this->searchEnable = $config->getBoolean('search.enable', FALSE);
 		$this->privRead = $config->getBoolean('priv.read', FALSE);
 
@@ -172,7 +177,7 @@ class sspmod_ldap_ConfigHelper {
 			throw new SimpleSAML_Error_Error('WRONGUSERPASS');
 		}
 
-		$ldap = new SimpleSAML_Auth_LDAP($this->hostname, $this->enableTLS, $this->debug, $this->timeout);
+		$ldap = new SimpleSAML_Auth_LDAP($this->hostname, $this->enableTLS, $this->debug, $this->timeout, 389, $this->referrals);
 
 		if (!$this->searchEnable) {
 			$ldapusername = addcslashes($username, ',+"\\<>;*');
@@ -239,10 +244,18 @@ class sspmod_ldap_ConfigHelper {
 		$ldap = new SimpleSAML_Auth_LDAP($this->hostname,
 			$this->enableTLS,
 			$this->debug,
-			$this->timeout);
+			$this->timeout,
+			389,
+			$this->referrals);
 
 		if ($attribute == NULL)
 			$attribute = $this->searchAttributes;
+
+		if ($this->searchUsername !== NULL) {
+			if(!$ldap->bind($this->searchUsername, $this->searchPassword)) {
+				throw new Exception('Error authenticating using search username & password.');
+			}
+		}
 
 		return $ldap->searchfordn($this->searchBase, $attribute,
 			$value, $allowZeroHits);
@@ -255,7 +268,17 @@ class sspmod_ldap_ConfigHelper {
 		$ldap = new SimpleSAML_Auth_LDAP($this->hostname,
 			$this->enableTLS,
 			$this->debug,
-			$this->timeout);
+			$this->timeout,
+			389,
+			$this->referrals);
+
+		/* Are privs needed to get the attributes? */
+		if ($this->privRead) {
+			/* Yes, rebind with privs */
+			if(!$ldap->bind($this->privUsername, $this->privPassword)) {
+				throw new Exception('Error authenticating using privileged DN & password.');
+			}
+		}
 
 		return $ldap->getAttributes($dn, $attributes);
 	}

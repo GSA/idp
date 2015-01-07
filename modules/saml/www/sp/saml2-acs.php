@@ -34,7 +34,7 @@ if ($idp === NULL) {
 	}
 }
 
-$session = SimpleSAML_Session::getInstance();
+$session = SimpleSAML_Session::getSessionFromRequest();
 $prevAuth = $session->getAuthData($sourceId, 'saml:sp:prevAuth');
 if ($prevAuth !== NULL && $prevAuth['id'] === $response->getId() && $prevAuth['issuer'] === $idp) {
 	/* OK, it looks like this message has the same issuer
@@ -45,11 +45,20 @@ if ($prevAuth !== NULL && $prevAuth['id'] === $response->getId() && $prevAuth['i
 	 * instead of displaying a confusing error message.
 	 */
 	SimpleSAML_Logger::info('Duplicate SAML 2 response detected - ignoring the response and redirecting the user to the correct page.');
-	SimpleSAML_Utilities::redirect($prevAuth['redirect']);
+	SimpleSAML_Utilities::redirectTrustedURL($prevAuth['redirect']);
 }
+
+$idpMetadata = array();
 
 $stateId = $response->getInResponseTo();
 if (!empty($stateId)) {
+
+	// sanitize the input
+	$sid = SimpleSAML_Utilities::parseStateID($stateId);
+	if (!is_null($sid['url'])) {
+		SimpleSAML_Utilities::checkURLAllowed($sid['url']);
+	}
+
 	/* This is a response to a request we sent earlier. */
 	$state = SimpleSAML_Auth_State::loadState($stateId, 'saml:sp:sso');
 
@@ -58,18 +67,30 @@ if (!empty($stateId)) {
 	if ($state['saml:sp:AuthId'] !== $sourceId) {
 		throw new SimpleSAML_Error_Exception('The authentication source id in the URL does not match the authentication source which sent the request.');
 	}
+
+	/* Check that the issuer is the one we are expecting. */
+	assert('array_key_exists("ExpectedIssuer", $state)');
+	if ($state['ExpectedIssuer'] !== $idp) {
+		$idpMetadata = $source->getIdPMetadata($idp);
+		$idplist = $idpMetadata->getArrayize('IDPList', array());
+		if (!in_array($state['ExpectedIssuer'], $idplist)) {
+			throw new SimpleSAML_Error_Exception('The issuer of the response does not match to the identity provider we sent the request to.');
+		}
+	}
 } else {
 	/* This is an unsolicited response. */
 	$state = array(
 		'saml:sp:isUnsolicited' => TRUE,
 		'saml:sp:AuthId' => $sourceId,
-		'saml:sp:RelayState' => $response->getRelayState(),
+		'saml:sp:RelayState' => SimpleSAML_Utilities::checkURLAllowed($response->getRelayState()),
 	);
 }
 
 SimpleSAML_Logger::debug('Received SAML2 Response from ' . var_export($idp, TRUE) . '.');
 
-$idpMetadata = $source->getIdPmetadata($idp);
+if (empty($idpMetadata)) {
+	$idpMetadata = $source->getIdPmetadata($idp);
+}
 
 try {
 	$assertions = sspmod_saml_Message::processResponse($spMetadata, $idpMetadata, $response);
@@ -156,8 +177,6 @@ $state['saml:AuthenticatingAuthority'] = $authenticatingAuthority;
 $state['saml:AuthenticatingAuthority'][] = $idp;
 $state['PersistentAuthData'][] = 'saml:AuthenticatingAuthority';
 
-$state['saml:sp:IdP'] = $idp;
-$state['PersistentAuthData'][] = 'saml:sp:IdP';
 $state['saml:sp:NameID'] = $nameId;
 $state['PersistentAuthData'][] = 'saml:sp:NameID';
 $state['saml:sp:SessionIndex'] = $sessionIndex;

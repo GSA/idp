@@ -8,7 +8,6 @@
  *
  * @author Olav Morken, UNINETT AS.
  * @package simpleSAMLphp
- * @version $Id$
  */
 abstract class sspmod_core_Auth_UserPassBase extends SimpleSAML_Auth_Source {
 
@@ -55,6 +54,23 @@ abstract class sspmod_core_Auth_UserPassBase extends SimpleSAML_Auth_Source {
 	 */
 	protected $rememberUsernameChecked = FALSE;
 
+    /**
+     * Storage for general config option session.rememberme.enable.
+     * loginuserpass.php page/template uses this option to present
+     * users with a checkbox to keep their session alive across
+     * different browser sessions (that is, closing and opening the
+     * browser again).
+     * @var bool
+     */
+    protected $rememberMeEnabled = FALSE;
+
+    /**
+     * Storage for general config option session.rememberme.checked.
+     * loginuserpass.php page/template uses this option to default
+     * the "remember me" checkbox to checked or not.
+     * @var bool
+     */
+    protected $rememberMeChecked = FALSE;
 
 	/**
 	 * Constructor for this authentication source.
@@ -85,6 +101,11 @@ abstract class sspmod_core_Auth_UserPassBase extends SimpleSAML_Auth_Source {
 			$this->rememberUsernameChecked = (bool) $config['remember.username.checked'];
 			unset($config['remember.username.checked']);
 		}
+
+        // get the "remember me" config options
+        $sspcnf = SimpleSAML_Configuration::getInstance();
+        $this->rememberMeEnabled = $sspcnf->getBoolean('session.rememberme.enable', FALSE);
+        $this->rememberMeChecked = $sspcnf->getBoolean('session.rememberme.checked', FALSE);
 	}
 
 
@@ -121,6 +142,21 @@ abstract class sspmod_core_Auth_UserPassBase extends SimpleSAML_Auth_Source {
 		return $this->rememberUsernameChecked;
 	}
 
+    /**
+     * Check if the "remember me" feature is enabled.
+     * @return bool TRUE if enabled, FALSE otherwise.
+     */
+    public function isRememberMeEnabled() {
+        return $this->rememberMeEnabled;
+    }
+
+    /**
+     * Check if the "remember me" checkbox should be checked.
+     * @return bool TRUE if enabled, FALSE otherwise.
+     */
+    public function isRememberMeChecked() {
+        return $this->rememberMeChecked;
+    }
 
 	/**
 	 * Initialize login.
@@ -158,7 +194,7 @@ abstract class sspmod_core_Auth_UserPassBase extends SimpleSAML_Auth_Source {
 		 */
 		$url = SimpleSAML_Module::getModuleURL('core/loginuserpass.php');
 		$params = array('AuthState' => $id);
-		SimpleSAML_Utilities::redirect($url, $params);
+		SimpleSAML_Utilities::redirectTrustedURL($url, $params);
 
 		/* The previous function never returns, so this code is never executed. */
 		assert('FALSE');
@@ -185,18 +221,23 @@ abstract class sspmod_core_Auth_UserPassBase extends SimpleSAML_Auth_Source {
 	 * Handle login request.
 	 *
 	 * This function is used by the login form (core/www/loginuserpass.php) when the user
-	 * enters a username and password. On success, it will not return. If an error occurs,
-	 * it will return the error code.
+	 * enters a username and password. On success, it will not return. On wrong
+	 * username/password failure, and other errors, it will throw an exception.
 	 *
 	 * @param string $authStateId  The identifier of the authentication state.
 	 * @param string $username  The username the user wrote.
 	 * @param string $password  The password the user wrote.
-	 * @return string Error code in the case of an error.
 	 */
 	public static function handleLogin($authStateId, $username, $password) {
 		assert('is_string($authStateId)');
 		assert('is_string($username)');
 		assert('is_string($password)');
+
+		// sanitize the input
+		$sid = SimpleSAML_Utilities::parseStateID($authStateId);
+		if (!is_null($sid['url'])) {
+			SimpleSAML_Utilities::checkURLAllowed($sid['url']);
+		}
 
 		/* Here we retrieve the state array we saved in the authenticate-function. */
 		$state = SimpleSAML_Auth_State::loadState($authStateId, self::STAGEID);
@@ -213,16 +254,15 @@ abstract class sspmod_core_Auth_UserPassBase extends SimpleSAML_Auth_Source {
 		 * was called. We should call login() on the same authentication source.
 		 */
 
+		/* Attempt to log in. */
 		try {
-			/* Attempt to log in. */
 			$attributes = $source->login($username, $password);
-		} catch (SimpleSAML_Error_Error $e) {
-			/*
-			 * Login failed. Return the error code to the login form, so that it
-			 * can display an error message to the user.
-			 */
-			return $e->getErrorCode();
+		} catch (Exception $e) {
+			SimpleSAML_Logger::stats('Unsuccessful login attempt from '.$_SERVER['REMOTE_ADDR'].'.');
+			throw $e;
 		}
+
+		SimpleSAML_Logger::stats('User \''.$username.'\' has been successfully authenticated.');
 
 		/* Save the attributes we received from the login-function in the $state-array. */
 		assert('is_array($attributes)');

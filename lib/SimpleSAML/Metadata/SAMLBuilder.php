@@ -6,7 +6,6 @@
  * This class builds SAML 2.0 metadata for an entity by examining the metadata for the entity.
  *
  * @package simpleSAMLphp
- * @version $Id$
  */
 class SimpleSAML_Metadata_SAMLBuilder {
 
@@ -85,6 +84,20 @@ class SimpleSAML_Metadata_SAMLBuilder {
 		return $xml->ownerDocument->saveXML();
 	}
 
+	public function addSecurityTokenServiceType($metadata) {
+		assert('is_array($metadata)');
+		assert('isset($metadata["entityid"])');
+		assert('isset($metadata["metadata-set"])');
+
+		$metadata = SimpleSAML_Configuration::loadFromArray($metadata, $metadata['entityid']);
+                $defaultEndpoint = $metadata->getDefaultEndpoint('SingleSignOnService');
+                $e = new sspmod_adfs_SAML2_XML_fed_SecurityTokenServiceType();
+                $e->Location = $defaultEndpoint['Location'];
+
+		$this->addCertificate($e, $metadata);
+
+		$this->entityDescriptor->RoleDescriptor[] = $e;
+	}
 
 	/**
 	 * @param SimpleSAML_Configuration $metadata  Metadata.
@@ -114,7 +127,12 @@ class SimpleSAML_Metadata_SAMLBuilder {
 			foreach ($metadata->getArray('scope') as $scopetext) {
 				$s = new SAML2_XML_shibmd_Scope();
 				$s->scope = $scopetext;
-				$s->regexp = FALSE;
+				// Check whether $ ^ ( ) * | \ are in a scope -> assume regex.
+				if (1 === preg_match('/[\$\^\)\(\*\|\\\\]/', $scopetext)) {
+					$s->regexp = TRUE;
+				} else {
+					$s->regexp = FALSE;
+				}
 				$e->Extensions[] = $s;
 			}
 		}
@@ -140,6 +158,25 @@ class SimpleSAML_Metadata_SAMLBuilder {
 				$ea->children[] = $a;
 			}
 			$this->entityDescriptor->Extensions[] = $ea;
+		}
+
+		if ($metadata->hasValue('RegistrationInfo')) {
+			$ri = new SAML2_XML_mdrpi_RegistrationInfo();
+			foreach ($metadata->getArray('RegistrationInfo') as $riName => $riValues) {
+				switch ($riName) {
+					case 'authority':
+						$ri->registrationAuthority = $riValues;
+						break;
+					case 'instant':
+						$ri->registrationInstant = SAML2_Utils::xsDateTimeToTimestamp($riValues);
+						break;
+					case 'policies':
+						$ri->RegistrationPolicy = $riValues;
+						break;
+				}
+			}
+			$this->entityDescriptor->Extensions[] = $ri;
+
 		}
 
 		if ($metadata->hasValue('UIInfo')) {
@@ -318,6 +355,8 @@ class SimpleSAML_Metadata_SAMLBuilder {
 			return;
 		}
 
+		$attributesrequired = $metadata->getArray('attributes.required', array());
+
 		/*
 		 * Add an AttributeConsumingService element with information as name and description and list
 		 * of requested attributes
@@ -330,11 +369,17 @@ class SimpleSAML_Metadata_SAMLBuilder {
 		$attributeconsumer->ServiceDescription = $metadata->getLocalizedString('description', array());
 
 		$nameFormat = $metadata->getString('attributes.NameFormat', SAML2_Const::NAMEFORMAT_UNSPECIFIED);
-		foreach ($attributes as $attribute) {
+		foreach ($attributes as $friendlyName => $attribute) {
 			$t = new SAML2_XML_md_RequestedAttribute();
 			$t->Name = $attribute;
+			if (!is_int($friendlyName)) {
+				$t->FriendlyName = $friendlyName;
+			}
 			if ($nameFormat !== SAML2_Const::NAMEFORMAT_UNSPECIFIED) {
 				$t->NameFormat = $nameFormat;
+			}
+			if (in_array($attribute, $attributesrequired)) {
+				$t->isRequired = true;
 			}
 			$attributeconsumer->RequestedAttribute[] = $t;
 		}
@@ -383,16 +428,18 @@ class SimpleSAML_Metadata_SAMLBuilder {
 	 * Add SAML 2.0 SP metadata.
 	 *
 	 * @param array $metadata  The metadata.
+	 * @param array $protocols The protocols supported.
 	 */
-	public function addMetadataSP20($metadata) {
+	public function addMetadataSP20($metadata, $protocols = array(SAML2_Const::NS_SAMLP)) {
 		assert('is_array($metadata)');
+		assert('is_array($protocols)');
 		assert('isset($metadata["entityid"])');
 		assert('isset($metadata["metadata-set"])');
 
 		$metadata = SimpleSAML_Configuration::loadFromArray($metadata, $metadata['entityid']);
 
 		$e = new SAML2_XML_md_SPSSODescriptor();
-		$e->protocolSupportEnumeration[] = 'urn:oasis:names:tc:SAML:2.0:protocol';
+		$e->protocolSupportEnumeration = $protocols;
 
 
 		$this->addExtensions($metadata, $e);
@@ -418,7 +465,7 @@ class SimpleSAML_Metadata_SAMLBuilder {
 
 		foreach ($metadata->getArray('contacts', array()) as $contact) {
 			if (array_key_exists('contactType', $contact) && array_key_exists('emailAddress', $contact)) {
-				$this->addContact($contact['contactType'], $contact);
+				$this->addContact($contact['contactType'], SimpleSAML_Utils_Config_Metadata::getContact($contact));
 			}
 		}
 
@@ -440,8 +487,10 @@ class SimpleSAML_Metadata_SAMLBuilder {
 		$e = new SAML2_XML_md_IDPSSODescriptor();
 		$e->protocolSupportEnumeration[] = 'urn:oasis:names:tc:SAML:2.0:protocol';
 
-		if ($metadata->getBoolean('redirect.sign', FALSE)) {
-			$e->WantAuthnRequestSigned = TRUE;
+		if ($metadata->hasValue('sign.authnrequest')) {
+			$e->WantAuthnRequestsSigned = $metadata->getBoolean('sign.authnrequest');
+		} elseif ($metadata->hasValue('redirect.sign')) {
+			$e->WantAuthnRequestsSigned = $metadata->getBoolean('redirect.sign');
 		}
 
 		$this->addExtensions($metadata, $e);
@@ -462,7 +511,7 @@ class SimpleSAML_Metadata_SAMLBuilder {
 
 		foreach ($metadata->getArray('contacts', array()) as $contact) {
 			if (array_key_exists('contactType', $contact) && array_key_exists('emailAddress', $contact)) {
-				$this->addContact($contact['contactType'], $contact);
+				$this->addContact($contact['contactType'], SimpleSAML_Utils_Config_Metadata::getContact($contact));
 			}
 		}
 
@@ -559,43 +608,23 @@ class SimpleSAML_Metadata_SAMLBuilder {
 	/**
 	 * Add contact information.
 	 *
-	 * Accepts a contact type, and an array of the following elements (all are optional):
-	 * - emailAddress     Email address (as string), or array of email addresses.
-	 * - telephoneNumber  Telephone number of contact (as string), or array of telephone numbers.
-	 * - name             Full name of contact, either as <GivenName> <SurName>, or as <SurName>, <GivenName>.
-	 * - surName          Surname of contact.
-	 * - givenName        Givenname of contact.
-	 * - company          Company name of contact.
+	 * Accepts a contact type, and a contact array that must be previously sanitized.
 	 *
-	 * 'name' will only be used if neither givenName nor surName is present.
+	 * @param string $type The type of contact. Deprecated.
+	 * @param array $details The details about the contact.
 	 *
-	 * The following contact types are allowed:
-	 * "technical", "support", "administrative", "billing", "other"
-	 *
-	 * @param string $type  The type of contact.
-	 * @param array $details  The details about the contact.
+	 * @todo Change the signature to remove $type.
+	 * @todo Remove the capability to pass a name and parse it inside the method.
+     *
+     * @deprecated This function will change its signature and no longer parse a 'name' element.
 	 */
 	public function addContact($type, $details) {
 		assert('is_string($type)');
 		assert('is_array($details)');
 		assert('in_array($type, array("technical", "support", "administrative", "billing", "other"), TRUE)');
 
-		/* Parse name into givenName and surName. */
-		if (isset($details['name']) && empty($details['surName']) && empty($details['givenName'])) {
-			$names = explode(',', $details['name'], 2);
-			if (count($names) === 2) {
-				$details['surName'] = trim($names[0]);
-				$details['givenName'] = trim($names[1]);
-			} else {
-				$names = explode(' ', $details['name'], 2);
-				if (count($names) === 2) {
-					$details['givenName'] = trim($names[0]);
-					$details['surName'] = trim($names[1]);
-				} else {
-					$details['surName'] = trim($names[0]);
-				}
-			}
-		}
+		// TODO: remove this check as soon as getContact() is called always before calling this function.
+		$details = SimpleSAML_Utils_Config_Metadata::getContact($details);
 
 		$e = new SAML2_XML_md_ContactPerson();
 		$e->contactType = $type;

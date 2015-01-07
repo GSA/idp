@@ -6,7 +6,6 @@
  * released to the SP.
  *
  * @package simpleSAMLphp
- * @version $Id$
  */
 class sspmod_consent_Auth_Process_Consent extends SimpleSAML_Auth_ProcessingFilter
 {
@@ -51,6 +50,13 @@ class sspmod_consent_Auth_Process_Consent extends SimpleSAML_Auth_ProcessingFilt
      * @var aray
      */
     private $_noconsentattributes = array();
+
+    /**
+     * Whether we should show the "about service"-link on the no consent page.
+     *
+     * @var bool
+     */
+    private $_showNoConsentAboutService = true;
 
     /**
      * Initialize consent filter
@@ -125,6 +131,14 @@ class sspmod_consent_Auth_Process_Consent extends SimpleSAML_Auth_ProcessingFilt
                 );
             }
         } 
+
+        if (array_key_exists('showNoConsentAboutService', $config)) {
+            if (!is_bool($config['showNoConsentAboutService'])) {
+                throw new SimpleSAML_Error_Exception('Consent: showNoConsentAboutService must be a boolean.');
+            }
+            $this->_showNoConsentAboutService = $config['showNoConsentAboutService'];
+        }
+
     }
 
     /**
@@ -250,6 +264,7 @@ class sspmod_consent_Auth_Process_Consent extends SimpleSAML_Auth_ProcessingFilt
         $state['consent:checked']             = $this->_checked;
         $state['consent:hiddenAttributes']    = $this->_hiddenAttributes;
         $state['consent:noconsentattributes'] = $this->_noconsentattributes;
+        $state['consent:showNoConsentAboutService'] = $this->_showNoConsentAboutService;
 
         // User interaction nessesary. Throw exception on isPassive request	
         if (isset($state['isPassive']) && $state['isPassive'] == true) {
@@ -262,7 +277,7 @@ class sspmod_consent_Auth_Process_Consent extends SimpleSAML_Auth_ProcessingFilt
         // Save state and redirect
         $id  = SimpleSAML_Auth_State::saveState($state, 'consent:request');
         $url = SimpleSAML_Module::getModuleURL('consent/getconsent.php');
-        SimpleSAML_Utilities::redirect($url, array('StateId' => $id));
+        SimpleSAML_Utilities::redirectTrustedURL($url, array('StateId' => $id));
     }
 
     /**

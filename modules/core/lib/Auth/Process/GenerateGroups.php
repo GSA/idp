@@ -5,7 +5,6 @@
  *
  * @author Olav Morken, UNINETT AS.
  * @package simpleSAMLphp
- * @version $Id$
  */
 class sspmod_core_Auth_Process_GenerateGroups extends SimpleSAML_Auth_ProcessingFilter {
 
@@ -135,11 +134,9 @@ class sspmod_core_Auth_Process_GenerateGroups extends SimpleSAML_Auth_Processing
 	private static function escapeIllegalChars($string) {
 		assert('is_string($string)');
 
-		/* Since preg_replace escapes both ["] and ['], while either of them isn't unescaped in the string
-		 * evaluation, we need a test to catch both of them.
-		 */
-		$replacement = '("\\1" === "\\\'") ? "%27" : sprintf("%%%02x", ord("\\1"))';
-		return preg_replace('/([^a-zA-Z0-9_@=.])/e', $replacement, $string);
+		return preg_replace_callback('/([^a-zA-Z0-9_@=.])/',
+			function ($m) { return sprintf("%%%02x", ord($m[1])); },
+			$string);
 	}
 
 }

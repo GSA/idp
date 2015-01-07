@@ -17,6 +17,7 @@
 		"pt": "Erro",
 		"pl": "B\u0142\u0105d",
 		"cs": "Chyba",
+		"eu": "Eman dituzun datuak okerrak dira",
 		"tr": "Hata",
 		"lt": "Klaida",
 		"it": "Errore",
@@ -28,7 +29,9 @@
 		"zh": "\u9519\u8bef",
 		"ar": "\u062e\u0637\u0627",
 		"id": "Error",
-		"sr": "Gre\u0161ka"
+		"lv": "K\u013c\u016bda",
+		"sr": "Gre\u0161ka",
+		"ro": "Eroare"
 	},
 	"user_pass_header": {
 		"no": "Skriv inn brukernavn og passord",
@@ -36,7 +39,7 @@
 		"sv": "Ange ditt anv\u00e4ndarnamn och l\u00f6senord",
 		"es": "Indique su nombre de usuario y clave de acceso",
 		"fr": "Entrez votre identifiant et votre mot de passe",
-		"de": "Bitten geben sie ihren Nutzernamen und Passwort ein",
+		"de": "Bitten geben Sie ihren Nutzernamen und Passwort ein",
 		"nl": "Geef je gebruikersnaam en wachtwoord",
 		"lb": "Gid w.e.g Aeren Benotzernumm an d Passwuert an",
 		"sl": "Vnesite svoje uporabni\u0161ko ime in geslo",
@@ -47,7 +50,8 @@
 		"pt-br": "Digite seu usu\u00e1rio e senha",
 		"pt": "Introduza o seu nome de utilizador e senha",
 		"pl": "Wprowad\u017a nazw\u0119 uzytkownika i has\u0142o",
-		"cs": "lo\u017ete sv\u00e9 jm\u00e9no a heslo",
+		"cs": "Vlo\u017ete sv\u00e9 jm\u00e9no a heslo",
+		"eu": "Sartu erabiltzaile-izena eta pasahitza",
 		"tr": "Kullan\u0131c\u0131 ad\u0131 ve \u015fifrenizi giriniz",
 		"lt": "\u012eveskite savo prisijungimo vard\u0105 ir slapta\u017eod\u012f",
 		"it": "Inserire nome utente e password",
@@ -59,7 +63,9 @@
 		"zh": "\u8f93\u5165\u4f60\u7684\u7528\u6237\u540d\u548c\u5bc6\u7801",
 		"ar": "\u0627\u062f\u062e\u0644 \u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0648 \u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631",
 		"id": "Masukkan username dan password Anda",
-		"sr": "Unesite va\u0161e korisni\u010dko ime i lozinku"
+		"lv": "Ievadiet savu lietot\u0101ja v\u0101rdu un paroli",
+		"sr": "Unesite va\u0161e korisni\u010dko ime i lozinku",
+		"ro": "V\u0103 rug\u0103m s\u0103 completa\u021bi numele de utilizator \u0219i parola"
 	},
 	"user_pass_text": {
 		"no": "En tjeneste har bedt om bekreftelse p\u00e5 din identitet. Skriv inn ditt brukernavn og passord for \u00e5 autentisere deg.",
@@ -67,7 +73,7 @@
 		"sv": "En webbtj\u00e4nst har beg\u00e4rt att du ska logga in. Detta betyder att du beh\u00f6ver ange ditt anv\u00e4ndarnamn och ditt l\u00f6senord i formul\u00e4ret nedan.",
 		"es": "Un servicio solicita que se autentique. Esto significa que debe indicar su nombre de usuario y su clave de acceso en el siguiente formulario.",
 		"fr": "Un service a demand\u00e9 \u00e0 ce que vous vous authentifiez.  Cela signifie que vous devez entrer votre identifiant et votre mot de passe dans le formulaire ci-dessous.",
-		"de": "Um diesen Dienst zu nutzen, m\u00fcssen sie sich authentifizieren. Bitte geben sie daher unten Nutzernamen und Passwort ein.",
+		"de": "Um diesen Dienst zu nutzen, m\u00fcssen Sie sich authentifizieren. Bitte geben sie daher unten Nutzernamen und Passwort ein.",
 		"nl": "Voor deze dienst is authenticatie vereist. Geef je gebruikersnaam en wachtwoord in onderstaand formulier.",
 		"lb": "En Service huet ungefrot aerch ze authentifiz\u00e9iren. Daat heescht daer musst aeren Benotzernumm an d'Passwuert an de Formulairen heidr\u00ebnner angin.",
 		"sl": "Storitev zahteva, da se prijavite. To pomeni, da je potreben vnos uporabni\u0161kega imena in gesla v spodnji polji.",
@@ -90,7 +96,10 @@
 		"zh": "\u4e00\u4e2a\u670d\u52a1\u9700\u8981\u4f60\u7684\u8ba4\u8bc1\uff0c\u8bf7\u5728\u4e0b\u9762\u8f93\u5165\u4f60\u7684\u7528\u6237\u540d\u548c\u5bc6\u7801",
 		"ar": "\u0637\u0644\u0628\u062a \u0627\u062d\u062f\u064a \u0627\u0644\u062e\u062f\u0645\u0627\u062a \u0627\u0646 \u062a\u0648\u062b\u0642 \u0627\u0646\u0643 \u0627\u0646\u062a. \u0631\u062c\u0627\u0621\u0627\u064b \u0642\u0645 \u0628\u0625\u062f\u0631\u0627\u062c \u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0648 \u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631 \u062e\u0627\u0635\u062a\u0643 \u0628\u0627\u0644\u0627\u0633\u062a\u0645\u0627\u0631\u0629 \u0623\u062f\u0646\u0627\u0647",
 		"id": "Sebuah layanan telah meminta Anda untuk melakukan autentifikasi. Silahkan masukkan username dan password Anda pada form dibawah",
-		"sr": "Servis zahteva od vas da se autentifikujete. Unesite va\u0161e korisni\u010dko ime i lozinku u dole navedena polja."
+		"lv": "Serviss pieprasa autentifik\u0101ciju. L\u016bdzu ievadiet savu lietot\u0101ja v\u0101rdu un paroli.",
+		"sr": "Servis zahteva od vas da se autentifikujete. Unesite va\u0161e korisni\u010dko ime i lozinku u dole navedena polja.",
+		"ro": "Un serviciu a solicitat autentificarea dumneavoastr\u0103. V\u0103 rug\u0103m s\u0103 completa\u021bi numele de utilizator \u0219i parola \u00een c\u00e2mpurile de mai jos.",
+		"eu": "Zerbitzu batek kautotu zaitezen eskatzen du. Mesedez, zure erabiltzaile-izena eta pasahitza honako formulario honetan sartu itzazu."
 	},
 	"login_button": {
 		"no": "Logg inn",
@@ -111,6 +120,7 @@
 		"pt": "Entrar",
 		"pl": "Login",
 		"cs": "P\u0159ihl\u00e1sit",
+		"eu": "Saioa hasi",
 		"tr": "Giri\u015f",
 		"lt": "Prisijungti",
 		"it": "Login",
@@ -122,7 +132,9 @@
 		"zh": "\u767b\u5f55",
 		"ar": "\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u062f\u062e\u0648\u0644",
 		"id": "Login",
-		"sr": "Prijavi se"
+		"lv": "Piesl\u0113gties",
+		"sr": "Prijavi se",
+		"ro": "Autentificare"
 	},
 	"username": {
 		"no": "Brukernavn",
@@ -143,6 +155,7 @@
 		"pt": "Nome de utilizador",
 		"pl": "Nazwa u\u017cytkownika",
 		"cs": "U\u017eivatel",
+		"eu": "Erabiltzaile-izena",
 		"tr": "Kullan\u0131c\u0131 ad\u0131",
 		"lt": "Prisijungimo vardas",
 		"it": "Nome utente",
@@ -154,7 +167,9 @@
 		"zh": "\u7528\u6237\u540d",
 		"ar": "\u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645",
 		"id": "Username",
-		"sr": "Korisni\u010dko ime"
+		"lv": "Lietot\u0101ja v\u0101rds",
+		"sr": "Korisni\u010dko ime",
+		"ro": "Nume de utilizator"
 	},
 	"organization": {
 		"no": "Organisasjon",
@@ -167,7 +182,7 @@
 		"lb": "Organisatioun",
 		"sl": "Organizacija",
 		"da": "Organistationsnavn",
-		"se": "Organisa&#353;uvdna",
+		"se": "Organisa\u0161uvdna",
 		"hr": "Ustanova",
 		"hu": "Szervezet",
 		"fi": "Organisaatio",
@@ -175,6 +190,7 @@
 		"pt": "Organiza\u00e7\u00e3o",
 		"pl": "Organizacja",
 		"cs": "Organizace",
+		"eu": "Erakundea",
 		"tr": "Organizasyon",
 		"lt": "Organizacija",
 		"it": "Organizzazione",
@@ -186,7 +202,9 @@
 		"zh": "\u7ec4\u7ec7",
 		"ar": "\u0627\u0644\u062c\u0647\u0629 ",
 		"id": "Organisasi",
-		"sr": "Institucija"
+		"lv": "Organiz\u0101cija",
+		"sr": "Institucija",
+		"ro": "Institu\u021bie"
 	},
 	"password": {
 		"no": "Passord",
@@ -199,7 +217,7 @@
 		"lb": "Passwuert",
 		"sl": "Geslo",
 		"da": "Kodeord",
-		"se": "Beassans&aacute;tni",
+		"se": "Beassans\u00e1tni",
 		"hr": "Zaporka",
 		"hu": "Jelsz\u00f3",
 		"fi": "Salasana",
@@ -207,6 +225,7 @@
 		"pt": "Senha",
 		"pl": "Has\u0142o",
 		"cs": "Heslo",
+		"eu": "Pasahitza",
 		"tr": "\u015eifre",
 		"lt": "Slapta\u017eodis",
 		"it": "Password",
@@ -218,7 +237,9 @@
 		"zh": "\u5bc6\u7801",
 		"ar": "\u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631",
 		"id": "Password",
-		"sr": "Lozinka"
+		"lv": "Parole",
+		"sr": "Lozinka",
+		"ro": "Parola"
 	},
 	"help_header": {
 		"no": "Hjelp! Jeg har glemt passordet mitt.",
@@ -238,6 +259,7 @@
 		"pt": "N\u00e3o me lembro da minha senha",
 		"pl": "Pomocy! Nie pami\u0119tam has\u0142a.",
 		"cs": "Chci pomoci. Zapomn\u011bl jsem heslo.",
+		"eu": "Lagundu! Ez dut nire pasahitza gogoratzen.",
 		"tr": "Yard\u0131m! \u015eifremi hat\u0131rlam\u0131yorum.",
 		"lt": "Pagalbos! Nepamenu savo slapta\u017eod\u017eio.",
 		"it": "Aiuto! Non ricordo la mia password.",
@@ -249,7 +271,9 @@
 		"zh": "\u5e2e\u52a9\uff01\u6211\u5fd8\u8bb0\u6211\u7684\u5bc6\u7801\u4e86\uff01",
 		"ar": "\u0633\u0627\u0639\u062f\u0646\u064a! \u0644\u0627 \u0627\u0630\u0643\u0631 \u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631",
 		"id": "Tolong! Saya tidak ingat password saya",
-		"sr": "Upomo\u0107! Zaboravio\/la sam svoju lozinku."
+		"lv": "Pal\u012bdziet! Es neatceros paroli.",
+		"sr": "Upomo\u0107! Zaboravio\/la sam svoju lozinku.",
+		"ro": "Nu mai \u0219tiu parola."
 	},
 	"help_text": {
 		"no": "Synd! - Uten riktig brukernavn og passord kan du ikke autentisere deg. Det kan v\u00e6re noen som kan hjelpe deg. Fors\u00f8k \u00e5 kontakt brukerst\u00f8tte ved din vertsorganisasjon.",
@@ -257,7 +281,7 @@
 		"sv": "Tyv\u00e4rr kan du inte logga in i tj\u00e4nsten om du inte har ditt anv\u00e4ndarnamn och ditt l\u00f6senord. Ta kontakt med din organisations support eller helpdesk f\u00f6r att f\u00e5 hj\u00e4lp.",
 		"es": "&iexcl;Muy mal! - Sin su nombre de usuario y su clave de acceso usted no se puede identificar y acceder al servicio. A lo mejor hay alguien que puede ayudarle. &iexcl;P&oacute;ngase en contacto con el centro de ayuda de su universidad!",
 		"fr": "Pas de chance! Sans votre identifiant et votre mot de passe vous ne pouvez pas vous authentifier et acc\u00e9der au service. Il y a peut-\u00eatre quelqu'un pour vous aider.  Contactez le help desk de votre universit\u00e9!",
-		"de": "Pech! - Ohne Nutzername und Passwort k\u00f6nnen sie sich nicht authentifizieren und somit den Dienst nicht nutzen. M\u00f6glicherweise kann ihnen jemand helfen, kontaktieren sie dazu den Helpdesk ihrer Einrichtung.",
+		"de": "Pech! - Ohne Nutzername und Passwort k\u00f6nnen Sie sich nicht authentifizieren und somit den Dienst nicht nutzen. M\u00f6glicherweise kann ihnen jemand helfen, kontaktieren Sie dazu den Helpdesk ihrer Einrichtung.",
 		"nl": "Vette pech! - Zonder je gebruikersnaam en wachtwoord kun je je niet authenticeren en dus niet gebruikmaken van deze dienst.",
 		"lb": "Pesch gehaat! - Ouni aeren Benotzernumm an d'Passwuert k\u00ebnn der aerch net authentifiz\u00e9iren an op den Service zougraiffen.",
 		"sl": "\u017dal se brez uporabni\u0161kega imena in gesla ne morete prijaviti in uporabljati storitev.",
@@ -280,7 +304,10 @@
 		"zh": "\u592a\u7cdf\u7cd5\u4e86\uff01-\u6ca1\u6709\u4f60\u7684\u7528\u6237\u540d\u548c\u5bc6\u7801\u4f60\u5c06\u4e0d\u80fd\u8bbf\u95ee\u8be5\u670d\u52a1\uff0c\u4e5f\u8bb8\u6709\u4eba\u80fd\u591f\u5e2e\u52a9\u4f60\uff0c\u8bf7\u54a8\u8be2\u4f60\u6240\u5728\u5927\u5b66\u7684\u670d\u52a1\u53f0",
 		"ar": "\u0644\u0633\u0648\u0621 \u0627\u0644\u062d\u0638 \u0644\u0627 \u064a\u0645\u0643\u0646\u0646\u0627 \u0627\u0644\u062a\u0648\u062b\u0642 \u0645\u0646 \u0647\u0648\u064a\u062a\u0643 \u0628\u062f\u0648\u0646 \u0627\u0633\u0645 \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0648 \u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631 \u0648\u0628\u0627\u0644\u062a\u0627\u0644\u064a \u0644\u0627 \u064a\u0645\u0643\u0646\u0643 \u0627\u0633\u062a\u062e\u062f\u0627\u0645 \u0627\u0644\u062e\u062f\u0645\u0629. \u0644\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0627\u062a\u0635\u0644 \u0628\u0627\u0644\u0645\u0648\u0638\u0641 \u0627\u0644\u0645\u0633\u0624\u0648\u0644 \u0628\u0635\u0641\u062d\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629 \u0628\u062c\u0627\u0645\u0639\u062a\u0643",
 		"id": "Sayang sekali! - Tanpa username dan password Anda tidak dapat melakukan autentifikasi agar dapat mengakses layanan. Mungkin ada seseorang yang dapat menolong Anda. Hubungi help desk pada universitas Anda.",
-		"sr": "\u0160teta! - Bez ispravnog korisni\u010dkog imena i lozinke ne mo\u017eete pristupiti servisu. Da biste saznali va\u0161e korisni\u010dko ime i lozinku obratite se va\u0161oj mati\u010dnoj instituciji."
+		"lv": "Bez lietot\u0101ja v\u0101rda un paroles J\u016bs nevarat autentific\u0113ties un nevarat izmantot servisu. Iesp\u0113jams, ir k\u0101ds, kas var Jums pal\u012bdz\u0113t. Vaic\u0101jiet savas universit\u0101tes pal\u012bdz\u012bbas dienestam.",
+		"sr": "\u0160teta! - Bez ispravnog korisni\u010dkog imena i lozinke ne mo\u017eete pristupiti servisu. Da biste saznali va\u0161e korisni\u010dko ime i lozinku obratite se va\u0161oj mati\u010dnoj instituciji.",
+		"ro": "Din p\u0103cate f\u0103r\u0103 nume de utilizator \u0219i parol\u0103 nu v\u0103 pute\u021bi autentifica pentru accesul la acest serviciu. Contacta\u021bi echipa de suport tehnic de la universitatea dumneavoastr\u0103.",
+		"eu": "Zeinen txarto! - Zure erabiltziale-izena eta pasahitza gabe ezin zara identifikatu ezta zerbitzuan sartu ere. Agian bada norbait lagun diezazukeena. Jar zaitez harremanetan erakundeko laguntza zentroarekin!"
 	},
 	"error_nopassword": {
 		"no": "Du kontaktet loginsiden, men passordet ble ikke sendt med. Fors\u00f8k igjen.",
@@ -311,7 +338,10 @@
 		"zh": "\u4f60\u786e\u5b9e\u53d1\u9001\u4e86\u4e00\u4e9b\u4fe1\u606f\u7ed9\u767b\u5f55\u9875\u9762\uff0c\u4f46\u7531\u4e8e\u67d0\u4e9b\u539f\u56e0\uff0c\u4f60\u6ca1\u6709\u53d1\u9001\u5bc6\u7801\uff0c\u8bf7\u518d\u8bd5\u4e00\u6b21",
 		"ar": "\u0644\u0642\u062f \u0642\u0645\u062a \u0628\u0625\u0631\u0633\u0627\u0644 \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0644\u0635\u0641\u062d\u0629 \u0627\u0644\u062f\u062e\u0648\u0644 \u0644\u0643\u0646 \u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631 \u063a\u064a\u0631 \u0645\u0631\u0641\u0642\u0629. \u0631\u062c\u0627\u0621\u0627\u064b \u0627\u0639\u062f \u0627\u0644\u0645\u062d\u0627\u0648\u0644\u0629",
 		"id": "Anda mengirimkan sesuatu ke halaman login, tetapi karena suatu alasan tertentu password tidak terkirimkan, Silahkan coba lagi.",
-		"sr": "Iz nekog razloga autentifikacionom servisu nije prosle\u0111ena va\u0161a lozinka. Molimo poku\u0161ajte ponovo."
+		"lv": "Kaut k\u0101du iemeslu d\u0113\u013c parole nav nos\u016bt\u012bta. L\u016bdzu m\u0113\u0123iniet v\u0113lreiz.",
+		"sr": "Iz nekog razloga autentifikacionom servisu nije prosle\u0111ena va\u0161a lozinka. Molimo poku\u0161ajte ponovo.",
+		"ro": "A\u021bi trimis informa\u021bii c\u0103tre pagina de autentificare dar din motive necunoscute parola nu a fost trimis\u0103. V\u0103 rug\u0103m s\u0103 \u00eencerca\u021bi din nou.",
+		"eu": "Sarrera orrira zerbait bidali duzu baina, arrazoiren bategatik, pasahitza ez da bidali.Saia zaitez berriro, mesedez."
 	},
 	"error_wrongpassword": {
 		"no": "Feil brukernavn eller passord.",
@@ -324,7 +354,7 @@
 		"lb": "Falschen Benotzernumm oder Passwuert",
 		"sl": "Napa\u010dno uporabni\u0161ko ime ali geslo!",
 		"da": "Forkert brugernavn eller kodeord",
-		"se": "Boastu geavahusnamma, beassans&aacute;tni dehe organisa&#353;uvdna.",
+		"se": "Boastu geavahusnamma, beassans\u00e1tni dehe organisa\u0161uvdna.",
 		"hr": "Neispravna korisni\u010dka oznaka ili zaporka.",
 		"hu": "Hib\u00e1s felhaszn\u00e1l\u00f3i n\u00e9v vagy jelsz\u00f3!",
 		"fi": "V\u00e4\u00e4r\u00e4 tunnus tai salasana.",
@@ -332,6 +362,7 @@
 		"pt": "Nome de utilizador ou senha incorrecta.",
 		"pl": "Nieprawid\u0142owa nazwa u\u017cytkownika lub has\u0142o.",
 		"cs": "Nekorektn\u00ed jmeno nebo heslo.",
+		"eu": "Erabiltzaile-izena edo pasahitza okerra",
 		"tr": "Kullan\u0131c\u0131 ad\u0131 ve\/veya \u015fifre yanl\u0131\u015f.",
 		"lt": "Neteisingas prisijungimo vardas arba slapta\u017eodis.",
 		"it": "Nome utente o password errati.",
@@ -343,7 +374,9 @@
 		"zh": "\u9519\u8bef\u7684\u7528\u6237\u540d\u6216\u8005\u5bc6\u7801",
 		"ar": " \u0627\u0633\u0645 \u0645\u0633\u062a\u062e\u062f\u0645 \u0627\u0648 \u0643\u0644\u0645\u0629 \u0633\u0631 \u062e\u0637\u0627",
 		"id": "Username atau password salah",
-		"sr": "Neispravno korisni\u010dko ime ili lozinka."
+		"lv": "Nekorekts lietot\u0101ja v\u0101rds vai parole.",
+		"sr": "Neispravno korisni\u010dko ime ili lozinka.",
+		"ro": "Nume de utilizator incorect sau parola incorect\u0103."
 	},
 	"contact_info": {
 		"no": "Kontaktinformasjon:",
@@ -362,6 +395,7 @@
 		"pt": "Contactos:",
 		"pl": "Informacje kontaktowe:",
 		"cs": "Kontaktn\u00ed informace",
+		"eu": "Harremanetarako informazioa:",
 		"tr": "\u0130leti\u015fim bilgileri:",
 		"lt": "Kontaktai:",
 		"it": "Informazioni di contatto:",
@@ -373,7 +407,9 @@
 		"zh": "\u8054\u7cfb\u65b9\u5f0f",
 		"ar": "\u0628\u064a\u0627\u0646\u0627\u062a \u0627\u0644\u0627\u062a\u0635\u0627\u0644",
 		"id": "Informasi Kontak",
-		"sr": "Kontakt podaci:"
+		"lv": "Kontaktinform\u0101cija",
+		"sr": "Kontakt podaci:",
+		"ro": "Informa\u021bii de contact:"
 	},
 	"select_home_org": {
 		"no": "Velg vertsorganisasjon",
@@ -381,7 +417,7 @@
 		"sv": "V\u00e4lj vilken organisation du kommer ifr\u00e5n",
 		"es": "Seleccione su organizaci\u00f3n origen",
 		"fr": "Choisissez votre fournisseur.",
-		"de": "W\u00e4hlen sie die Einrichtung, von der sie ihre Zugangsdaten beziehen",
+		"de": "W\u00e4hlen sie die Einrichtung, von der Sie ihre Zugangsdaten beziehen",
 		"nl": "Kies je organisatie",
 		"sl": "Izberite va\u0161o doma\u010do organizacijo",
 		"da": "V\u00e6lg din hjemmeinstitution",
@@ -403,7 +439,10 @@
 		"zh": "\u9009\u62e9\u4f60\u7684\u7ec4\u7ec7",
 		"ar": "\u0627\u062e\u062a\u0627\u0631 \u062c\u0647\u062a\u0643 \u0627\u0644\u0627\u0645",
 		"id": "Pilih Basis Organisasi Anda",
-		"sr": "Izaberite va\u0161u mati\u010dnu instituciju"
+		"lv": "Izv\u0113lieties organiz\u0101ciju",
+		"sr": "Izaberite va\u0161u mati\u010dnu instituciju",
+		"ro": "Alege\u021bi institu\u021bia de origine",
+		"eu": "Hautatu zure jatorrizko erakundea"
 	},
 	"change_home_org_title": {
 		"no": "Endre din vertsorganisasjon",
@@ -411,7 +450,7 @@
 		"sv": "\u00c4ndra vilken organisation du kommer ifr\u00e5n",
 		"es": "Cambiar su organizaci\u00f3n origen",
 		"fr": "Changez votre fournisseur",
-		"de": "Eine andere Einrichtung, von der sie Zugangsdaten erhalten, ausw\u00e4hlen",
+		"de": "Eine andere Einrichtung, von der Sie Zugangsdaten erhalten, ausw\u00e4hlen",
 		"nl": "Verander je organisatie",
 		"sl": "Izberite va\u0161o doma\u010do organizacijo.",
 		"da": "Skift hjemmeinstitution",
@@ -433,7 +472,10 @@
 		"zh": "\u6539\u53d8\u4f60\u7684\u5bb6\u5ead\u7ec4\u7ec7",
 		"ar": "\u063a\u064a\u0631\u0627\u0644\u062c\u0647\u0629 \u0627\u0644\u0627\u0645",
 		"id": "Ubah basis organisasi anda",
-		"sr": "Promenite izbor za va\u0161u mati\u010dnu instituciju"
+		"lv": "Main\u012bt organiz\u0101ciju",
+		"sr": "Promenite izbor za va\u0161u mati\u010dnu instituciju",
+		"ro": "Modifica\u021bi institu\u021bia de origine",
+		"eu": "Zure jatorrizko erakundea aldatu"
 	},
 	"change_home_org_text": {
 		"no": "Du har valgt <b>%HOMEORG%<\/b> som din vertsorganisasjon. Dersom dette er feil kan du velge en annen.",
@@ -463,7 +505,10 @@
 		"zh": "\u4f60\u9009\u62e9\u4e86<b>%HOMEORG%<\/b>\u4f5c\u4e3a\u4f60\u7684\u5bb6\u5ead\u7ec4\u7ec7\u3002\u5982\u679c\u9519\u4e86\u8bf7\u9009\u62e9\u5176\u4ed6\u7684",
 		"ar": "\u0644\u0642\u062f \u0642\u0645\u062a \u0628\u0627\u062e\u062a\u064a\u0627\u0631 <b>%HOMEORG%<\/b> \u0643\u062c\u0647\u062a\u0643 \u0627\u0644\u0627\u0645. \u0627\u0646 \u0643\u0627\u0646 \u0647\u0630\u0627 \u0627\u0644\u0627\u062e\u062a\u064a\u0627\u0631 \u063a\u064a\u0631 \u0635\u062d\u064a\u062d \u064a\u0645\u0643\u0646\u0643 \u062a\u063a\u064a\u064a\u0631\u0647",
 		"id": "Anda telah memilih  <b>%HOMEORG%<\/b> sebagai basis organisasi anda. Jika ini salah anda dapat memilih yang lain.",
-		"sr": "Odabrali ste <b>%HOMEORG%<\/b> kao va\u0161u mati\u010dnu instituciju. Ako to nije ta\u010dno mo\u017eete odabrati drugu instituciju."
+		"lv": "J\u016bs izv\u0113l\u0113j\u0101ties <b>%HOMEORG%<\/b>. ja tas nav pareizi, izv\u0113lieties citu.",
+		"sr": "Odabrali ste <b>%HOMEORG%<\/b> kao va\u0161u mati\u010dnu instituciju. Ako to nije ta\u010dno mo\u017eete odabrati drugu instituciju.",
+		"ro": "A\u021bi ales ca institu\u021bie de origine<b>%HOMEORG%<\/b>. Dac\u0103 nu este corect v\u0103 rug\u0103m s\u0103 alege\u021bi alt\u0103 institu\u021bie.",
+		"eu": "<b>%HOMEORG%<\/b> hautatu duzu zure jatorrizko erakunde bezala. Informazio hau okerra bada beste bat hautatu dezakezu."
 	},
 	"change_home_org_button": {
 		"no": "Velg vertsorganisasjon",
@@ -493,7 +538,10 @@
 		"zh": "\u9009\u62e9\u4f60\u7684\u5bb6\u5ead\u7ec4\u7ec7",
 		"ar": "\u0627\u062e\u062a\u0627\u0631 \u062c\u0647\u062a\u0643 \u0627\u0644\u0627\u0645",
 		"id": "Pilih basis organisasi",
-		"sr": "Izaberite mati\u010dnu instituciju"
+		"lv": "Izv\u0113l\u0113ties organiz\u0101ciju",
+		"sr": "Izaberite mati\u010dnu instituciju",
+		"ro": "Alege\u021bi institu\u021bia de origine",
+		"eu": "Jatorrizko erakundea hautatu"
 	},
 	"help_desk_link": {
 		"no": "Hjemmesiden til brukerst\u00f8tte",
@@ -513,7 +561,7 @@
 		"pl": "Strona domowa pomocy technicznej (Helpdesk)",
 		"cs": "Help desk",
 		"tr": "Yard\u0131m anasayfas\u0131",
-		"lt": "Vartotoj\u0173 aptarnavimo puslapis",
+		"lt": "Naudotoj\u0173 aptarnavimo puslapis",
 		"it": "Homepage del servizio di assistenza",
 		"ja": "\u30d8\u30eb\u30d7\u30c7\u30b9\u30af\u30da\u30fc\u30b8",
 		"zh-tw": "\u5354\u52a9\u9801\u9762",
@@ -523,7 +571,10 @@
 		"zh": "\u670d\u52a1\u53f0\u7684\u4e3b\u9875",
 		"ar": "\u0635\u0641\u062d\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629",
 		"id": "Homepage Help desk",
-		"sr": "Stranice slu\u017ebe za podr\u0161ku korisnicima"
+		"lv": "Pal\u012bdz\u012bbas dienesta interneta lapa",
+		"sr": "Stranice slu\u017ebe za podr\u0161ku korisnicima",
+		"ro": "Pagina echipei de suport tehnic",
+		"eu": "Laguntza teknikoaren orria "
 	},
 	"help_desk_email": {
 		"no": "Send e-post til brukerst\u00f8tte",
@@ -543,7 +594,7 @@
 		"pl": "wy\u015blij e-mail do helpdesku",
 		"cs": "Email helpdesku zasl\u00e1n.",
 		"tr": "Yard\u0131m'a e-posta g\u00f6nderin",
-		"lt": "Si\u0173sti el. lai\u0161k\u0105 vartotoj\u0173 aptarnavimo specialistams",
+		"lt": "Si\u0173sti el. lai\u0161k\u0105 naudotoj\u0173 aptarnavimo specialistams",
 		"it": "Invia una mail al servizio di assistenza",
 		"ja": "\u30d8\u30eb\u30d7\u30c7\u30b9\u30af\u306b\u30e1\u30fc\u30eb\u3059\u308b",
 		"zh-tw": "\u50b3\u9001 e-mail \u5c0b\u6c42\u5354\u52a9",
@@ -553,7 +604,10 @@
 		"zh": "\u53d1\u9001Email\u7ed9\u670d\u52a1\u53f0",
 		"ar": "\u0627\u0631\u0633\u0644 \u0625\u064a\u0645\u064a\u0644 \u0644\u0635\u0641\u062d\u0629 \u0627\u0644\u0645\u0633\u0627\u0639\u062f\u0629",
 		"id": "Kirim e-mail ke help dek",
-		"sr": "Po\u0161alji e-mail slu\u017ebi za podr\u0161ku korisnicima"
+		"lv": "S\u016bt\u012bt e-pastu pal\u012bdz\u012bbas dienestam",
+		"sr": "Po\u0161alji e-mail slu\u017ebi za podr\u0161ku korisnicima",
+		"ro": "Trimite\u021bi un mesaj la echipa de suport tehnic",
+		"eu": "Bidali posta laguntza teknikoari"
 	},
 	"next": {
 		"no": "Fortsett",
@@ -583,6 +637,9 @@
 		"zh": "\u4e0b\u4e00\u6b65",
 		"ar": "\u0627\u0644\u062a\u0627\u0644\u064a",
 		"id": "Selanjutnya",
-		"sr": "Dalje"
+		"lv": "T\u0101l\u0101k",
+		"sr": "Dalje",
+		"ro": "Urm\u0103torul pas",
+		"eu": "Hurrengoa"
 	}
 }

@@ -170,12 +170,6 @@
 	"descr_WRONGUSERPASS": {
 		"en": "Either no user with the given username could be found, or the password you gave was wrong. Please check the username and try again."
 	},
-	"title_USERBLOCKED": {
-		"en": "Account not activated or blocked."
-	},
-	"descr_USERBLOCKED": {
-		"en": "This account has not been activated or is blocked."
-	},
 	"title_RESPONSESTATUSNOSUCCESS": {
 		"en": "Error received from Identity Provider"
 	},

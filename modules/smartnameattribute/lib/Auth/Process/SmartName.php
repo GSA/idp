@@ -5,7 +5,6 @@
  *
  * @author Andreas Åkre Solberg, UNINETT AS.
  * @package simpleSAMLphp
- * @version $Id$
  */
 class sspmod_smartnameattribute_Auth_Process_SmartName extends SimpleSAML_Auth_ProcessingFilter {
 
@@ -65,6 +64,8 @@ class sspmod_smartnameattribute_Auth_Process_SmartName extends SimpleSAML_Auth_P
 	public function process(&$request) {
 		assert('is_array($request)');
 		assert('array_key_exists("Attributes", $request)');
+
+		SimpleSAML_Logger::warning('You are using the deprecated smartnameattribute:SmartName filter. You should replace it with smartattributes:SmartName instead.');
 
 		$attributes =& $request['Attributes'];
 		

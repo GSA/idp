@@ -4,7 +4,7 @@
 
 /* Load simpleSAMLphp, configuration */
 $config = SimpleSAML_Configuration::getInstance();
-$session = SimpleSAML_Session::getInstance();
+$session = SimpleSAML_Session::getSessionFromRequest();
 
 /* Check if valid local session exists.. */
 if ($config->getBoolean('admin.protectindexpage', false)) {
@@ -85,7 +85,7 @@ $functionchecks = array(
 	'simplexml_import_dom' => array('required', 'SimpleXML'),
 	'dom_import_simplexml' => array('required', 'XML DOM'),
 	'preg_match'       => array('required',  'RegEx support'),
-	'mcrypt_module_open'=> array('optional',  'MCrypt'),
+	'mcrypt_module_open'=> array('required',  'MCrypt'),
 	'mysql_connect'    => array('optional',  'MySQL support'),
 );
 if (SimpleSAML_Module::isModuleEnabled('ldap')) {
@@ -98,8 +98,8 @@ if (SimpleSAML_Module::isModuleEnabled('radius')) {
 $funcmatrix = array();
 $funcmatrix[] = array(
 	'required' => 'required', 
-	'descr' => 'PHP Version >= 5.2. You run: ' . phpversion(),
-	'enabled' => version_compare(phpversion(), '5.2', '>='));
+	'descr' => 'PHP Version >= 5.3. You run: ' . phpversion(),
+	'enabled' => version_compare(phpversion(), '5.3', '>='));
 foreach ($functionchecks AS $func => $descr) {
 	$funcmatrix[] = array('descr' => $descr[1], 'required' => $descr[0], 'enabled' => function_exists($func));
 }
@@ -131,7 +131,7 @@ $funcmatrix[] = array(
 $funcmatrix[] = array(
 	'required' => 'reccomended',
 	'descr' => 'Magic Quotes should be turned off',
-	'enabled' => (get_magic_quotes_runtime() === 0)
+	'enabled' => (get_magic_quotes_runtime() == 0)
 );
 
 

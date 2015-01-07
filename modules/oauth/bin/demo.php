@@ -2,7 +2,7 @@
 <?php
 
 
-function readline($prompt = '') {
+function _readline($prompt = '') {
     echo $prompt;
     return rtrim( fgets( STDIN ), "\n" );
 }
@@ -20,7 +20,7 @@ try {
 	require_once(dirname(dirname(__FILE__)) . '/libextinc/OAuth.php');
 
 	// Needed in order to make session_start to be called before output is printed.
-	$session = SimpleSAML_Session::getInstance();
+	$session = SimpleSAML_Session::getSessionFromRequest();
 
 	//$baseurl = (isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : 'https://foodle.feide.no/simplesaml');
 	$baseurl = (isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : 'http://mars.foodle.local/simplesaml');
@@ -40,7 +40,7 @@ try {
 	echo('Go to this URL to authenticate/authorize the request: ' . $url . "\n");
 	system('open ' . $url);
 
-	readline('Click enter when you have completed the authorization step using your web browser...');
+	_readline('Click enter when you have completed the authorization step using your web browser...');
 
 	// Replace the request token with an access token
 	$accessToken = $consumer->getAccessToken( $baseurl . '/module.php/oauth/accessToken.php', $requestToken);

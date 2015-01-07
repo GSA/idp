@@ -1,8 +1,6 @@
 <?php
 /* 
  * Configuration for the LDAP authentication module.
- * 
- * $Id: $
  */
 
 $config = array (
@@ -16,7 +14,7 @@ $config = array (
 	'auth.ldap.dnpattern'  => 'uid=%username%,dc=feide,dc=no,ou=feide,dc=uninett,dc=no',
 	'auth.ldap.hostname'   => 'ldap.uninett.no',
 	'auth.ldap.attributes' => null,
-	'auth.ldap.enable_tls' => false,
+	'auth.ldap.enable_tls' => true,
 	
 	/*
 	 * Searching the DN of the user.

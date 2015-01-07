@@ -7,8 +7,8 @@
 </head>
 <body onload="document.getElementsByTagName('input')[0].click();">
 
-  <!-- adde loader gif since drupal auth is taking a couple of seconds -->
-  <img style="position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;display:block;" width="192px" height="92px" src="/saml/resources/data.gov/images/loader.gif" alt="loader gif image" />
+         <!-- add loader gif since drupal auth is taking a couple of seconds -->
+        <img style="position:absolute;top:0;bottom:0;left:0;right:0;margin:auto;display:block;" width="192px" height="92px" src="/saml/resources/data.gov/images/loader.gif" alt="loader gif image" />
 
 	<noscript>
 		<p><strong>Note:</strong> Since your browser does not support JavaScript, you must press the button below once to proceed.</p> 

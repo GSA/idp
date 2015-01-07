@@ -5,7 +5,6 @@
  *
  * @author Olav Morken, UNINETT AS.
  * @package simpleSAMLphp
- * @version $Id$
  */
 class SimpleSAML_Module {
 
@@ -40,6 +39,17 @@ class SimpleSAML_Module {
 
 		if(!is_dir($moduleDir)) {
 			return FALSE;
+		}
+
+		$globalConfig = SimpleSAML_Configuration::getInstance();
+		$moduleEnable = $globalConfig->getArray('module.enable', array());
+
+		if(isset($moduleEnable[$module])) {
+			if(is_bool($moduleEnable[$module]) === TRUE) {
+				return $moduleEnable[$module];
+			}
+
+			throw new Exception("Invalid module.enable value for for the module $module");
 		}
 
 		if (assert_options(ASSERT_ACTIVE) && !file_exists($moduleDir . '/default-enable') && !file_exists($moduleDir . '/default-disable')) {

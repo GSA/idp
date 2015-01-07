@@ -7,7 +7,6 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/oauth/lib
  *
  * @author Andreas Åkre Solberg, UNINETT AS.
  * @package simpleSAMLphp
- * @version $Id: Twitter.php 2867 2011-07-05 12:08:29Z comel.ah $
  */
 class sspmod_authtwitter_Auth_Source_Twitter extends SimpleSAML_Auth_Source {
 
@@ -23,6 +22,7 @@ class sspmod_authtwitter_Auth_Source_Twitter extends SimpleSAML_Auth_Source {
 
 	private $key;
 	private $secret;
+	private $force_login;
 
 
 	/**
@@ -38,18 +38,11 @@ class sspmod_authtwitter_Auth_Source_Twitter extends SimpleSAML_Auth_Source {
 		/* Call the parent constructor first, as required by the interface. */
 		parent::__construct($info, $config);
 
-		if (!array_key_exists('key', $config))
-			throw new Exception('Twitter authentication source is not properly configured: missing [key]');
-		
-		$this->key = $config['key'];
-		
-		if (!array_key_exists('secret', $config))
-			throw new Exception('Twitter authentication source is not properly configured: missing [secret]');
+		$configObject = SimpleSAML_Configuration::loadFromArray($config, 'authsources[' . var_export($this->authId, TRUE) . ']');
 
-		$this->secret = $config['secret'];
-
-		// require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/extlibinc/facebook.php');
-
+		$this->key = $configObject->getString('key');
+		$this->secret = $configObject->getString('secret');
+		$this->force_login = $configObject->getBoolean('force_login', FALSE);
 	}
 
 
@@ -77,12 +70,29 @@ class sspmod_authtwitter_Auth_Source_Twitter extends SimpleSAML_Auth_Source {
 		SimpleSAML_Auth_State::saveState($state, self::STAGE_INIT);
 
 		// Authorize the request token
-		$consumer->getAuthorizeRequest('https://api.twitter.com/oauth/authenticate', $requestToken);
+		$url = 'https://api.twitter.com/oauth/authenticate';
+		if ($this->force_login) {
+			$url = SimpleSAML_Utilities::addURLparameter($url, array('force_login' => 'true'));
+		}
+		$consumer->getAuthorizeRequest($url, $requestToken);
 	}
 	
 	
 	public function finalStep(&$state) {
 		$requestToken = $state['authtwitter:authdata:requestToken'];
+		$parameters = array();
+
+		if (!isset($_REQUEST['oauth_token'])) {
+			throw new SimpleSAML_Error_BadRequest("Missing oauth_token parameter.");
+		}
+		if ($requestToken->key !== (string)$_REQUEST['oauth_token']) {
+			throw new SimpleSAML_Error_BadRequest("Invalid oauth_token parameter.");
+		}
+
+		if (!isset($_REQUEST['oauth_verifier'])) {
+			throw new SimpleSAML_Error_BadRequest("Missing oauth_verifier parameter.");
+		}
+		$parameters['oauth_verifier'] = (string)$_REQUEST['oauth_verifier'];
 		
 		$consumer = new sspmod_oauth_Consumer($this->key, $this->secret);
 		
@@ -90,11 +100,11 @@ class sspmod_authtwitter_Auth_Source_Twitter extends SimpleSAML_Auth_Source {
 			$requestToken->key . "] with the secret [" . $requestToken->secret . "]");
 
 		// Replace the request token with an access token
-		$accessToken = $consumer->getAccessToken('https://api.twitter.com/oauth/access_token', $requestToken);
+		$accessToken = $consumer->getAccessToken('https://api.twitter.com/oauth/access_token', $requestToken, $parameters);
 		SimpleSAML_Logger::debug("Got an access token from the OAuth service provider [" . 
 			$accessToken->key . "] with the secret [" . $accessToken->secret . "]");
 			
-		$userdata = $consumer->getUserInfo('https://api.twitter.com/account/verify_credentials.json', $accessToken);
+		$userdata = $consumer->getUserInfo('https://api.twitter.com/1.1/account/verify_credentials.json', $accessToken);
 		
 		if (!isset($userdata['id_str']) || !isset($userdata['screen_name'])) {
 			throw new SimpleSAML_Error_AuthSource($this->authId, 'Authentication error: id_str and screen_name not set.');
@@ -114,5 +124,3 @@ class sspmod_authtwitter_Auth_Source_Twitter extends SimpleSAML_Auth_Source {
 	}
 
 }
-
-?>

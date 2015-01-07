@@ -1,12 +1,22 @@
 <?php
 
+/**
+ * WARNING:
+ *
+ * THIS FILE IS DEPRECATED AND WILL BE REMOVED IN FUTURE VERSIONS
+ *
+ * @deprecated
+ */
+
 require_once('../_include.php');
 
 $config = SimpleSAML_Configuration::getInstance();
-$session = SimpleSAML_Session::getInstance();
+$session = SimpleSAML_Session::getSessionFromRequest();
+
+SimpleSAML_Logger::warning('The file example-simple/wsfed-example.php is deprecated and will be removed in future versions.');
 
 if (!$session->isValid('wsfed') ) {
-	SimpleSAML_Utilities::redirect(
+	SimpleSAML_Utilities::redirectTrustedURL(
 		'/' . $config->getBaseURL() . 'wsfed/sp/initSSO.php',
 		array('RelayState' => SimpleSAML_Utilities::selfURL())
 	);

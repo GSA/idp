@@ -3,7 +3,6 @@
  * This is the page the user lands on when choosing "no" in the consent form.
  *
  * @package simpleSAMLphp
- * @version $Id$
  */
 if (!array_key_exists('StateId', $_REQUEST)) {
     throw new SimpleSAML_Error_BadRequest(
@@ -12,6 +11,13 @@ if (!array_key_exists('StateId', $_REQUEST)) {
 }
 
 $id = $_REQUEST['StateId'];
+
+// sanitize the input
+$sid = SimpleSAML_Utilities::parseStateID($id);
+if (!is_null($sid['url'])) {
+	SimpleSAML_Utilities::checkURLAllowed($sid['url']);
+}
+
 $state = SimpleSAML_Auth_State::loadState($id, 'consent:request');
 
 $resumeFrom = SimpleSAML_Module::getModuleURL(
@@ -19,9 +25,17 @@ $resumeFrom = SimpleSAML_Module::getModuleURL(
     array('StateId' => $id)
 );
 
+$logoutLink = SimpleSAML_Module::getModuleURL(
+    'consent/logout.php',
+    array('StateId' => $id)
+);
+
+
 $aboutService = null;
-if (isset($state['Destination']['url.about'])) {
-    $aboutService = $state['Destination']['url.about'];
+if (!isset($state['consent:showNoConsentAboutService']) || $state['consent:showNoConsentAboutService']) {
+	if (isset($state['Destination']['url.about'])) {
+		$aboutService = $state['Destination']['url.about'];
+	}
 }
 
 $statsInfo = array();
@@ -36,4 +50,5 @@ $t = new SimpleSAML_XHTML_Template($globalConfig, 'consent:noconsent.php');
 $t->data['dstMetadata'] = $state['Destination'];
 $t->data['resumeFrom'] = $resumeFrom;
 $t->data['aboutService'] = $aboutService;
+$t->data['logoutLink'] = $logoutLink;
 $t->show();
